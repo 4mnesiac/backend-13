@@ -61,10 +61,16 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
+      if (card) {
+        res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
+      } else {
+        throw new Error('Карточка не найдена');
+      }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
+        res.status(400).send({ message: err.message });
+      } else if (Error) {
         res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
@@ -79,10 +85,16 @@ module.exports.dislikeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
+      if (card) {
+        res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
+      } else {
+        throw new Error('Карточка не найдена');
+      }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
+        res.status(400).send({ message: err.message });
+      } else if (Error) {
         res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });

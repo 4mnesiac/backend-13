@@ -1,6 +1,6 @@
 {
   "name": "sprint-13",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Практическая работа №13: REST API, NoSQL, MongoDB",
   "main": "app.js",
   "scripts": {
