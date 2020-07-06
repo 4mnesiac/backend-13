@@ -1,20 +1,22 @@
 const path = require('path');
 // eslint-disable-next-line import/no-dynamic-require
 const Card = require(path.join('..', 'models', 'card'));
+const NotFoundError = new Error();
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params._id)
     .then((card) => {
-      if (card) {
-        res.status(200).send({ message: `Карточка ${card._id} успешно удалена` });
-      } else {
-        throw new Error('Карточки с указанным id не существует или была удалена');
+      if (!card) {
+        NotFoundError.message = 'Карточки с указанным id не существует или была удалена';
+        NotFoundError.name = 'NotFoundError';
+        throw NotFoundError;
       }
+      res.status(200).send({ message: `Карточка ${card._id} успешно удалена` });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: err.message });
-      } else if (Error) {
+      } else if (err.name === 'NotFoundError') {
         res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
@@ -61,16 +63,17 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      if (card) {
-        res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
-      } else {
-        throw new Error('Карточка не найдена');
+      if (!card) {
+        NotFoundError.message = 'Карточка не найдена';
+        NotFoundError.name = 'NotFoundError';
+        throw NotFoundError;
       }
+      res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: err.message });
-      } else if (Error) {
+      } else if (err.name === 'NotFoundError') {
         res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
@@ -85,16 +88,17 @@ module.exports.dislikeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      if (card) {
-        res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
-      } else {
-        throw new Error('Карточка не найдена');
+      if (!card) {
+        NotFoundError.message = 'Карточка не найдена';
+        NotFoundError.name = 'NotFoundError';
+        throw NotFoundError;
       }
+      res.status(200).send({ _id: req.params.cardId, likes: card.likes.length });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: err.message });
-      } else if (Error) {
+      } else if (err.name === 'NotFoundError') {
         res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });

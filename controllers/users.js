@@ -58,10 +58,8 @@ module.exports.updateProfile = (req, res) => {
       });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: err.message });
-      } else if (err.name === 'CastError') {
-        res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
       }
@@ -83,10 +81,8 @@ module.exports.updateAvatar = (req, res) => {
       });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: err.message });
-      } else if (err.name === 'CastError') {
-        res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
       }

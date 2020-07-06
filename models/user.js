@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
       validator(imgUrl) {
         const regex = new RegExp(
           // eslint-disable-next-line no-useless-escape
-          '^(https?:\/{2})?(([a-z0-9_-]{0,63})(([a-z0-9-]{1,128}\.)+([a-z]{2,11})))(\/(([0-9a-zA-Zа-яЁА-ЯЁ_.#%&?=-]+)?\/?)*[.](jpg|jpeg|gif|png))?$',
+          '^(https?:\/{2})?(([a-z0-9_-]{0,63})(([a-z0-9-]{1,128}\.)+([a-z]{2,11})))(\/(([0-9a-zA-Zа-яЁА-ЯЁ_.#%&?=-]+))*[.](jpg|jpeg|gif|png))$',
         );
         return regex.test(imgUrl);
       },
