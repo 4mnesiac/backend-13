@@ -1,13 +1,24 @@
 const path = require('path');
 // eslint-disable-next-line import/no-dynamic-require
 const User = require(path.join('..', 'models', 'user'));
+const NotFoundError = new Error();
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params._id)
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => {
+      if (!user) {
+        NotFoundError.message = 'Пользователя с указанным id не существует';
+        NotFoundError.name = 'NotFoundError';
+        throw NotFoundError;
+      } else {
+        res.status(200).send({ data: user });
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: err.message });
+      } else if (err.name === 'NotFoundError') {
+        res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
       }
